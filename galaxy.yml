@@ -1,0 +1,16 @@
+namespace: "mmorev"
+name: "consul_template"
+version: "0.1.1"
+license: "GPL-3.0-or-later"
+readme: README.md
+authors:
+  - "Mikhail Morev <mmorev@live.ru>"
+description: "Parses Go templates using consul-template and values from HashiCorp Vault and Consul"
+repository: https://github.com/mmorev/ansible-consul-template
+issues: https://github.com/mmorev/ansible-consul-template/issues
+tags:
+  - vault
+  - hashicorp
+  - system
+  - consul
+
