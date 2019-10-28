@@ -13,12 +13,14 @@ Also consul-template allow use of environment variables in templates. so i have 
 ##### Additional information
 You can simply try to use this module. download latest version of vault and consul-template binaries from [HashiCorp official site](https://releases.hashicorp.com/) and place them in any location defined in your $path. then follow instructions below.
 
-run vault "dev mode" server with no need to configure it, then set required environment variable containing its address:
+run vault and consul in "dev mode" with no need to configure them, then set environment variable containing vault address:
 ```
 $ vault server --dev --log-level=warn &
+$ consul agent -dev -log-level=warn &
 $ export vault_addr=http://127.0.0.1:8200
 ```
 [Vault dev server documentation page](https://www.vaultproject.io/docs/concepts/dev-server.html)
+[Consul dev server documentation page](https://learn.hashicorp.com/consul/getting-started/agent)
 
 put some test values into vault:
 ```
@@ -28,9 +30,12 @@ $ vault kv put secret/testsecret secretkey=secretvalue
 put a template in file, for example, secret.vtmpl:
 ```
 # secret.vtmpl:
+# Vault query example:
 {{ with secret "secret/testsecret" -}}
-secretkey={{ index .data.data "secretkey" }}
+secretkey={{ index .Data.data "secretkey" }}
 {{- end }}
+# Consul query example:
+openkey={{ key "openkey" }}
 ```
 
 create a simple playbook which use consul_template module and example template:
