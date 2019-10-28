@@ -35,6 +35,8 @@ Create a simple playbook which use consul_template module and example template:
 ```
 # render.yml:
 - hosts: localhost
+  collections:
+    - mmorev.hashicorp
   tasks:
   - consul_template:
       src: secret.vtmpl
