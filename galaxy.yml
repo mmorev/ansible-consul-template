@@ -1,6 +1,6 @@
 namespace: "mmorev"
-name: "consul_template"
-version: "0.1.1"
+name: "hashicorp"
+version: "0.1.2"
 license: "GPL-3.0-or-later"
 readme: README.md
 authors:
