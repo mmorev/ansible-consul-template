@@ -30,10 +30,9 @@ class ActionModule(ActionBase):
 
         result = super(ActionModule, self).run(tmp, task_vars)
         del tmp  # tmp no longer has any effect
-        self._connection._shell.tmpdir = tempfile.mkdtemp(dir=C.DEFAULT_LOCAL_TMP)
 
         # assign to local vars for ease of use
-        tmpdir = self._connection._shell.tmpdir
+        tmpdir = tempfile.mkdtemp(dir=C.DEFAULT_LOCAL_TMP)
         source = self._task.args.get('src', None)
         content = self._task.args.get('content', None)
         dest = self._task.args.get('dest', None)
@@ -99,7 +98,6 @@ class ActionModule(ActionBase):
                                                                          loader=self._loader,
                                                                          templar=self._templar,
                                                                          shared_loader_obj=self._shared_loader_obj)
-                # result.update(fetch_action.run(task_vars=task_vars))
                 fetch_result = fetch_action.run(task_vars=task_vars)
                 if fetch_result.get('failed'):
                     result['failed'] = fetch_result['failed']
@@ -151,7 +149,8 @@ class ActionModule(ActionBase):
                 for arg in ('content', 'vault_addr', 'vault_token', 'consul_addr', 'consul_token', 'remote_src'):
                     copy_task.args.pop(arg, None)
                 copy_task.args.update(dict(src=result_file,
-                                           dest=dest))
+                                           dest=dest,
+                                           mode=mode))
                 copy_action = self._shared_loader_obj.action_loader.get('copy',
                                                                         task=copy_task,
                                                                         connection=self._connection,
